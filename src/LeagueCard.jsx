@@ -58,7 +58,7 @@ function LeagueCard({ league, setLeagues }) {
   //   }
   // };
 
-  // suggested 
+  // suggested
   // const index = prevLeagues.findIndex(
   //   (prevLeague) => prevLeague._id === league._id
   // );
@@ -78,7 +78,7 @@ function LeagueCard({ league, setLeagues }) {
       if (response.ok) {
         setLeagues((prevLeagues) => {
           const index = prevLeagues.findIndex(
-            (prevLeague) => prevLeague.id === league.id
+            (prevLeague) => prevLeague.id === league._id
           );
           const updatedLeagues = [...prevLeagues];
           updatedLeagues[index] = formData;
@@ -103,7 +103,7 @@ function LeagueCard({ league, setLeagues }) {
       [e.target.name]: e.target.value,
     }));
   };
-  
+
   return (
     <div className="league-card">
       <h2>{league.name}</h2>
@@ -122,8 +122,8 @@ function LeagueCard({ league, setLeagues }) {
             Country:
             <input
               type="text"
-              name="country"
-              value={formData.area.name}
+              name="areaName"
+              value={formData.areaName}
               onChange={handleChange}
             />
           </label>
@@ -131,8 +131,8 @@ function LeagueCard({ league, setLeagues }) {
             League Abbreviation:
             <input
               type="text"
-              name="league-abbreviation"
-              value={formData.area.code}
+              name="code"
+              value={formData.code}
               onChange={handleChange}
             />
           </label>
@@ -140,7 +140,7 @@ function LeagueCard({ league, setLeagues }) {
             Start-Date:
             <input
               type="string"
-              name="start-date"
+              name="startDate"
               value={formData.currentSeason?.startDate}
               onChange={handleChange}
             />
@@ -149,8 +149,8 @@ function LeagueCard({ league, setLeagues }) {
             End-Date:
             <input
               type="string"
-              name="start-date"
-              value={formData.currentSeason?.startDate}
+              name="endDate"
+              value={formData.currentSeason?.endDate}
               onChange={handleChange}
             />
           </label>

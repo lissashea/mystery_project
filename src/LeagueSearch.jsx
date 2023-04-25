@@ -90,7 +90,7 @@ function LeagueSearch() {
             value={selectedOption}
             onChange={handleChange}
           />
-          <button type="submit">Search</button>
+          <button className="searchbutton" type="submit">Search</button>
         </div>
       </form>
       {filteredLeagues.length > 0 ? (

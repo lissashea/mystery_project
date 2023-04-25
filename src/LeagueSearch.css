@@ -146,6 +146,10 @@ button:active {
   margin-bottom: 50px;
   }
 
+  .searchbutton {
+    margin-left: 20px;
+  }
+
   .form-container {
     border: solid black 5px;
     margin: 50px;
@@ -154,4 +158,5 @@ button:active {
   button.hideform {
     display: block;
     margin: auto;
+    margin-bottom: 40px;
   }
