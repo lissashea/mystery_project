@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./LeagueDashboard.css";
-import AddTeamForm from "./AddTeam.jsx";
 import Select from "react-select";
+import AddLeagueForm from "./AddLeagueForm.jsx";
 
-const LeagueCard = ({ league, onDelete, onDeleteTeam, onAdd }) => {
+const LeagueCard = ({ league, onDelete, onDeleteTeam, onAddLeague }) => {
   const handleDelete = async () => {
     try {
       const response = await fetch(
@@ -36,24 +36,24 @@ const LeagueCard = ({ league, onDelete, onDeleteTeam, onAdd }) => {
     }
   };
 
-  const handleAddTeam = async (newTeam) => {
+  const handleAddLeague = async (newLeague) => {
     try {
       const response = await fetch(
-        `https://ancient-coast-33215.herokuapp.com/football/teams`,
+        `https://ancient-coast-33215.herokuapp.com/football`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(newTeam),
+          body: JSON.stringify(newLeague),
         }
       );
       if (response.ok) {
         const data = await response.json();
-        onAdd(data);
+        onAddLeague(data);
       }
     } catch (error) {
-      console.error("Error adding team:", error);
+      console.error("Error adding league:", error);
     }
   };
 
@@ -78,7 +78,7 @@ const LeagueCard = ({ league, onDelete, onDeleteTeam, onAdd }) => {
       <p>
         <strong>End Date:</strong> {league.currentSeason?.endDate}
       </p>
-      <AddTeamForm leagueId={league._id} onAdd={handleAddTeam} />
+      <AddLeagueForm leagueId={league._id} onAdd={handleAddLeague} />
       <div className="team-list">
         {league.teams?.map((team) => (
           <div key={team._id} className="team">
@@ -95,7 +95,8 @@ const LeagueCard = ({ league, onDelete, onDeleteTeam, onAdd }) => {
       </div>
     </div>
   );
-};
+}
+  
 
 const LeagueDashboard = () => {
   const [leagues, setLeagues] = useState([]);
@@ -138,32 +139,24 @@ const LeagueDashboard = () => {
     );
   };
 
-  const handleAddTeam = async (newTeam) => {
+  const handleAddLeague = async (newLeague) => {
     try {
       const response = await fetch(
-        "https://ancient-coast-33215.herokuapp.com/football/teams",
+        "https://ancient-coast-33215.herokuapp.com/football",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(newTeam),
+          body: JSON.stringify(newLeague),
         }
       );
       if (response.ok) {
         const data = await response.json();
-        setLeagues((prevLeagues) =>
-          prevLeagues.map((league) => {
-            if (league._id === newTeam.leagueId) {
-              return { ...league, teams: [...league.teams, data] };
-            } else {
-              return league;
-            }
-          })
-        );
+        setLeagues((prevLeagues) => [...prevLeagues, data]);
       }
     } catch (error) {
-      console.error("Error adding team:", error);
+      console.error("Error adding league:", error);
     }
   };
 
@@ -210,7 +203,7 @@ const LeagueDashboard = () => {
             key={league._id}
             league={league}
             onDelete={handleDeleteLeague}
-            onAdd={handleAddTeam}
+            onAdd={handleAddLeague}
           />
         ))}
       </div>
