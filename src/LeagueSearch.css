@@ -131,11 +131,22 @@ button:active {
 }
 
 
-.submitnewbutton {
-margin-top: 20px;
-}
-
 /* add leagueform css */
 .small-placeholder::placeholder {
   font-size: 14px;
 }
+
+.form-container p {
+  margin-top: 10px;
+  color: green;
+}
+
+.submitnewbutton {
+  margin-top: 20px;
+  margin-bottom: 50px;
+  }
+
+  .form-container {
+    border: solid black 5px;
+    margin: 50px;
+  }

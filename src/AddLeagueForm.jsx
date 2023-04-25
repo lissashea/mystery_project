@@ -21,9 +21,10 @@ function AddLeagueForm({ onAdd }) {
       [name]: value,
     }));
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    
     if (
       !formData.name ||
       !formData.code ||
@@ -35,7 +36,7 @@ function AddLeagueForm({ onAdd }) {
       setMessage("Please fill out all fields");
       return;
     }
-
+    
     const newLeague = {
       name: formData.name,
       code: formData.code,
@@ -49,7 +50,7 @@ function AddLeagueForm({ onAdd }) {
         endDate: formData.endDate,
       },
     };
-
+    
     try {
       const response = await fetch(
         "https://ancient-coast-33215.herokuapp.com/football",
@@ -75,16 +76,15 @@ function AddLeagueForm({ onAdd }) {
         startDate: "",
         endDate: "",
       });
-      setMessage("League added successfully!");
+      window.alert("Form submitted successfully!");
       setSubmitted(true);
     } catch (error) {
       console.error(error);
+      window.alert("Error submitting form. Please try again later.");
     }
-    window.location.reload();
   };
-
   return (
-    <div>
+    <div className="form-container">
       <form onSubmit={handleSubmit}>
         <label>
           League Name:
@@ -95,6 +95,7 @@ function AddLeagueForm({ onAdd }) {
             value={formData.name}
             onChange={handleChange}
             className="small-placeholder"
+            required
           />
         </label>
         <label>
@@ -106,6 +107,7 @@ function AddLeagueForm({ onAdd }) {
             value={formData.code}
             onChange={handleChange}
             className="small-placeholder"
+            required
           />
         </label>
         <label>
@@ -117,6 +119,7 @@ function AddLeagueForm({ onAdd }) {
             value={formData.areaName}
             onChange={handleChange}
             className="small-placeholder"
+            required
           />
         </label>
         <label>
@@ -128,6 +131,7 @@ function AddLeagueForm({ onAdd }) {
             value={formData.areaCode}
             onChange={handleChange}
             className="small-placeholder"
+            required
           />
         </label>
         <label>
@@ -139,6 +143,7 @@ function AddLeagueForm({ onAdd }) {
             value={formData.startDate}
             onChange={handleChange}
             className="small-placeholder"
+            required
           />
         </label>
         <label>
@@ -150,15 +155,21 @@ function AddLeagueForm({ onAdd }) {
             value={formData.endDate}
             onChange={handleChange}
             className="small-placeholder"
+            required
           />
         </label>
         <button className="submitnewbutton" type="submit">
           Add League
         </button>
       </form>
-      <p>{message}</p>
-      {submitted && <p>Form submitted successfully!</p>}
+      {message && <p>{message}</p>}
+      {submitted && (
+        <div className="success-message">
+          <p>Form submitted successfully!</p>
+          <button onClick={() => window.location.reload()}>OK</button>
+        </div>
+      )}
     </div>
-  )};  
+  )}
 
 export default AddLeagueForm;

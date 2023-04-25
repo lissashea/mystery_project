@@ -30,10 +30,38 @@ function LeagueCard({ league, setLeagues }) {
     setEditing(true);
   };
 
+  // const handleSave = async () => {
+  //   try {
+  //     const response = await fetch(
+  //       `https://ancient-coast-33215.herokuapp.com/football/${league.id}`,
+  //       {
+  //         method: "PUT",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify(formData),
+  //       }
+  //     );
+  //     if (response.ok) {
+  //       setLeagues((prevLeagues) => {
+  //         const index = prevLeagues.findIndex(
+  //           (prevLeague) => prevLeague.id === league.id
+  //         );
+  //         const updatedLeagues = [...prevLeagues];
+  //         updatedLeagues[index] = formData;
+  //         return updatedLeagues;
+  //       });
+  //       setEditing(false);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error updating league:", error);
+  //   }
+  // };
+
   const handleSave = async () => {
     try {
       const response = await fetch(
-        `https://ancient-coast-33215.herokuapp.com/football/${league.id}`,
+        `https://ancient-coast-33215.herokuapp.com/football/${league._id}`,
         {
           method: "PUT",
           headers: {
@@ -64,12 +92,13 @@ function LeagueCard({ league, setLeagues }) {
   };
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
+    console.log(typeof e.target.value);
+    setFormData((prevFormData) => ({
+      ...prevFormData,
       [e.target.name]: e.target.value,
-    });
+    }));
   };
-
+  
   return (
     <div className="league-card">
       <h2>{league.name}</h2>
@@ -89,16 +118,34 @@ function LeagueCard({ league, setLeagues }) {
             <input
               type="text"
               name="country"
-              value={formData.country}
+              value={formData.area.name}
               onChange={handleChange}
             />
           </label>
           <label>
-            Founded:
+            League Abbreviation:
             <input
-              type="number"
-              name="founded"
-              value={formData.founded}
+              type="text"
+              name="league-abbreviation"
+              value={formData.area.code}
+              onChange={handleChange}
+            />
+          </label>
+          <label>
+            Start-Date:
+            <input
+              type="string"
+              name="start-date"
+              value={formData.currentSeason?.startDate}
+              onChange={handleChange}
+            />
+          </label>
+          <label>
+            End-Date:
+            <input
+              type="string"
+              name="start-date"
+              value={formData.currentSeason?.startDate}
               onChange={handleChange}
             />
           </label>
