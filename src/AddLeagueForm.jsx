@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 
 function AddLeagueForm({ onAdd }) {
-  const [formData, setFormData] = useState({ name: "", country: "", founded: "" });
+  const [formData, setFormData] = useState({ name: "", country: "", startDate: "", endDate: "" });
 
   const handleChange = (e) => {
     setFormData({
@@ -22,7 +22,7 @@ function AddLeagueForm({ onAdd }) {
       .catch((error) => {
         console.log(error);
       });
-    setFormData({ name: "", country: "", founded: "" });
+    setFormData({ name: "", country: "", startDate: "", endDate: "" });
   };
 
   return (
@@ -36,8 +36,12 @@ function AddLeagueForm({ onAdd }) {
         <input type="text" name="country" value={formData.country} onChange={handleChange} />
       </label>
       <label>
-        Founded:
-        <input type="number" name="founded" value={formData.founded} onChange={handleChange} />
+        Start Date:
+        <input type="date" name="startDate" value={formData.startDate} onChange={handleChange} />
+      </label>
+      <label>
+        End Date:
+        <input type="date" name="endDate" value={formData.endDate} onChange={handleChange} />
       </label>
       <button type="submit">Add League</button>
     </form>

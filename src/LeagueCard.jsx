@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "./LeagueSearch.css";
-import "./AddLeagueForm";
 
 function LeagueCard({ league, setLeagues }) {
   const [editing, setEditing] = useState(false);

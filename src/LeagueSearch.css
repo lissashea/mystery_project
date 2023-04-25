@@ -1,3 +1,11 @@
+* {
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+h1 {
+  text-align: center;
+}
+
 input[type="text"] {
   padding: 8px;
   margin-bottom: 16px;
@@ -15,11 +23,27 @@ input[type="text"] {
   display: block;
 }
 
+form {
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.league-cards-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+}
+
 .league-card {
   border: 1px solid #ccc;
   border-radius: 4px;
   padding: 16px;
   margin-bottom: 16px;
+  width: max-content;
 }
 
 h2 {
@@ -45,3 +69,7 @@ button:hover {
 .search-bar.focused + .league-list {
   display: block;
 }
+
+
+
+

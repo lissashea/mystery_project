@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import LeagueSearch from "./LeagueSearch";
-import AddLeagueForm from "./AddLeagueForm";
+import AddLeagueForm from "./AddLeagueForm.jsx";
+import LeagueSearch from "./LeagueSearch.jsx";
 
 function App() {
   const [leagues, setLeagues] = useState([]);
