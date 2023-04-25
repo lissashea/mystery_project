@@ -43,7 +43,8 @@ form {
   border-radius: 4px;
   padding: 16px;
   margin-bottom: 16px;
-  width: max-content;
+  width: 300px;
+  height: 300px;
 }
 
 h2 {

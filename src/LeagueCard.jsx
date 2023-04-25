@@ -75,9 +75,9 @@ function LeagueCard({ league, setLeagues }) {
           {league.area && league.area.flag &&
             <img src={league.area.flag} alt={`${league.area.name} flag`} />
           }
-          <p>location: {league.area ? league.area.name : 'N/A'}</p>
-          <p>league name: {league.name}</p>
-          <p>code: {league.code}</p>
+          <p>Country: {league.area ? league.area.name : 'N/A'}</p>
+          <p>League Name: {league.name}</p>
+          <p>Code: {league.code}</p>
           <button type="button" onClick={handleDelete}>Delete</button>
           <button type="button" onClick={handleEdit}>Edit</button>
         </>

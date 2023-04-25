@@ -1,48 +1,141 @@
 import React, { useState } from "react";
-import axios from "axios";
 
 function AddLeagueForm({ onAdd }) {
-  const [formData, setFormData] = useState({ name: "", country: "", startDate: "", endDate: "" });
+  const [formData, setFormData] = useState({
+    name: "",
+    code: "",
+    areaName: "",
+    areaCode: "",
+    areaFlag: null,
+    startDate: "",
+    endDate: "",
+  });
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    axios
-      .post("https://ancient-coast-33215.herokuapp.com/football", formData)
-      .then((response) => {
-        console.log(response);
-        onAdd(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
+  
+    const newLeague = {
+      name: formData.name,
+      code: formData.code,
+      area: {
+        name: formData.areaName,
+        code: formData.areaCode,
+        flag: formData.areaFlag || null
+      },
+      currentSeason: {
+        startDate: formData.startDate,
+        endDate: formData.endDate,
+      },
+    };
+  
+    try {
+      const response = await fetch("https://ancient-coast-33215.herokuapp.com/football", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(newLeague)
       });
-    setFormData({ name: "", country: "", startDate: "", endDate: "" });
+  
+      const data = await response.json();
+  
+      onAdd(data);
+  
+      setFormData({
+        name: "",
+        code: "",
+        areaName: "",
+        areaCode: "",
+        areaFlag: "",
+        startDate: "",
+        endDate: "",
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <label>
-        Name:
-        <input type="text" name="name" value={formData.name} onChange={handleChange} />
+        League Name:
+        <input
+          type="text"
+          name="name"
+          placeholder="League Name"
+          value={formData.name}
+          onChange={handleChange}
+        />
+      </label>
+      <label>
+        Code:
+        <input
+          type="text"
+          name="code"
+          placeholder="three or two digit league code"
+          value={formData.code}
+          onChange={handleChange}
+        />
       </label>
       <label>
         Country:
-        <input type="text" name="country" value={formData.country} onChange={handleChange} />
+        <input
+          type="text"
+          name="areaName"
+          placeholder="Country"
+          value={formData.areaName}
+          onChange={handleChange}
+        />
       </label>
       <label>
-        Start Date:
-        <input type="date" name="startDate" value={formData.startDate} onChange={handleChange} />
+        Code:
+        <input
+          type="text"
+          name="areaCode"
+          placeholder="League Code"
+          value={formData.areaCode}
+          onChange={handleChange}
+        />
       </label>
       <label>
-        End Date:
-        <input type="date" name="endDate" value={formData.endDate} onChange={handleChange} />
+        Area Flag:
+        <input
+          type="text"
+          name="areaFlag"
+          placeholder="flag image url"
+          value={formData.areaFlag}
+          onChange={handleChange}
+        />
       </label>
+      <label>
+        Current Season Start Date:
+        <input
+          type="text"
+          name="startDate"
+          placeholder="2022-08-10"
+          value={formData.startDate}
+          onChange={handleChange}
+        />
+      </label>
+      <label>
+        Current Season End Date:
+        <input
+          type="text"
+          name="endDate"
+          placeholder="2022-08-10"
+          value={formData.endDate}
+          onChange={handleChange}
+        />
+      </label>
+
       <button type="submit">Add League</button>
     </form>
   );
