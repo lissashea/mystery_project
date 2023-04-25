@@ -12,6 +12,7 @@ function AddLeagueForm({ onAdd }) {
   });
 
   const [message, setMessage] = useState("");
+  const [submitted, setSubmitted] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -20,9 +21,20 @@ function AddLeagueForm({ onAdd }) {
       [name]: value,
     }));
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (
+      !formData.name ||
+      !formData.code ||
+      !formData.areaName ||
+      !formData.areaCode ||
+      !formData.startDate ||
+      !formData.endDate
+    ) {
+      setMessage("Please fill out all fields");
+      return;
+    }
 
     const newLeague = {
       name: formData.name,
@@ -53,7 +65,6 @@ function AddLeagueForm({ onAdd }) {
         throw new Error("Failed to add league");
       }
       const data = await response.json();
-      setMessage("League added successfully!");
       onAdd(data);
       setFormData({
         name: "",
@@ -64,9 +75,12 @@ function AddLeagueForm({ onAdd }) {
         startDate: "",
         endDate: "",
       });
+      setMessage("League added successfully!");
+      setSubmitted(true);
     } catch (error) {
       console.error(error);
     }
+    window.location.reload();
   };
 
   return (
@@ -77,9 +91,10 @@ function AddLeagueForm({ onAdd }) {
           <input
             type="text"
             name="name"
-            placeholder="League Name"
+            placeholder="league Name"
             value={formData.name}
             onChange={handleChange}
+            className="small-placeholder"
           />
         </label>
         <label>
@@ -87,9 +102,10 @@ function AddLeagueForm({ onAdd }) {
           <input
             type="text"
             name="code"
-            placeholder="three or two digit league code"
+            placeholder="league abbreviation"
             value={formData.code}
             onChange={handleChange}
+            className="small-placeholder"
           />
         </label>
         <label>
@@ -97,9 +113,10 @@ function AddLeagueForm({ onAdd }) {
           <input
             type="text"
             name="areaName"
-            placeholder="Country"
+            placeholder="country"
             value={formData.areaName}
             onChange={handleChange}
+            className="small-placeholder"
           />
         </label>
         <label>
@@ -107,9 +124,10 @@ function AddLeagueForm({ onAdd }) {
           <input
             type="text"
             name="areaCode"
-            placeholder="League Code"
+            placeholder="league code"
             value={formData.areaCode}
             onChange={handleChange}
+            className="small-placeholder"
           />
         </label>
         <label>
@@ -120,6 +138,7 @@ function AddLeagueForm({ onAdd }) {
             placeholder="2022-08-10"
             value={formData.startDate}
             onChange={handleChange}
+            className="small-placeholder"
           />
         </label>
         <label>
@@ -130,13 +149,16 @@ function AddLeagueForm({ onAdd }) {
             placeholder="2022-08-10"
             value={formData.endDate}
             onChange={handleChange}
+            className="small-placeholder"
           />
         </label>
-        <button className="submitnewbutton" type="submit">Add League</button>
+        <button className="submitnewbutton" type="submit">
+          Add League
+        </button>
       </form>
       <p>{message}</p>
+      {submitted && <p>Form submitted successfully!</p>}
     </div>
-  );
-}
+  )};  
 
 export default AddLeagueForm;

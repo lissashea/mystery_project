@@ -76,7 +76,11 @@ function LeagueSearch() {
           value={searchTerm}
           onChange={handleSearch}
         />
-        <Select options={options} onChange={handleChange} />
+        <Select
+          options={options}
+          onChange={handleChange}
+          defaultValue={options[0]}
+        />
       </div>
       {filteredLeagues.length > 0 && (
         <div className="league-cards-container">

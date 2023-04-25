@@ -23,6 +23,7 @@ function LeagueCard({ league, setLeagues }) {
     } catch (error) {
       console.error("Error deleting league:", error);
     }
+    window.location.reload();
   };
 
   const handleEdit = () => {

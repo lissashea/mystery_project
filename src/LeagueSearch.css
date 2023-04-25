@@ -134,3 +134,8 @@ button:active {
 .submitnewbutton {
 margin-top: 20px;
 }
+
+/* add leagueform css */
+.small-placeholder::placeholder {
+  font-size: 14px;
+}
