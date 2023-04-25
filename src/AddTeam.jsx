@@ -1,61 +1,38 @@
 import React, { useState } from "react";
+import "./AddTeam.css";
 
-const AddTeamForm = ({ onAddTeam }) => {
+const AddTeamForm = ({ leagueId, onAdd }) => {
   const [name, setName] = useState("");
-  const [code, setCode] = useState("");
-  const [area, setArea] = useState("");
+  const [venue, setVenue] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    try {
-      const response = await fetch(
-        "https://ancient-coast-33215.herokuapp.com/football",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ name, code, area }),
-        }
-      );
-      const data = await response.json();
-      onAddTeam(data);
-      setName("");
-      setCode("");
-      setArea("");
-    } catch (error) {
-      console.error("Error adding team:", error);
-    }
+    const newTeam = { name, venue, leagueId };
+    onAdd(newTeam);
+    setName("");
+    setVenue("");
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Name:
+    <div className="add-team-container">
+      <form onSubmit={handleSubmit}>
         <input
           type="text"
+          placeholder="Team Name"
           value={name}
-          onChange={(e) => setName(e.target.value)}
+          onChange={(event) => setName(event.target.value)}
+          required
         />
-      </label>
-      <label>
-        Code:
         <input
           type="text"
-          value={code}
-          onChange={(e) => setCode(e.target.value)}
+          placeholder="Venue"
+          value={venue}
+          onChange={(event) => setVenue(event.target.value)}
+          required
         />
-      </label>
-      <label>
-        Area:
-        <input
-          type="text"
-          value={area}
-          onChange={(e) => setArea(e.target.value)}
-        />
-      </label>
-      <button type="submit">Add Team</button>
-    </form>
+        <button type="submit">Add Team</button>
+      </form>
+    </div>
   );
 };
 
