@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import "./LeagueDashboard.css";
-
+import AddTeamForm from "./AddTeam.jsx";
 
 const LeagueCard = ({ league, onDelete }) => {
   const handleDelete = async () => {
@@ -77,6 +77,18 @@ const LeagueDashboard = () => {
 
   const handleDeleteLeague = (id) => {
     setLeagues((prevLeagues) => prevLeagues.filter((league) => league._id !== id));
+  };
+
+  const handleAddTeam = (newTeam) => {
+    setLeagues((prevLeagues) =>
+      prevLeagues.map((league) => {
+        if (league._id === newTeam.leagueId) {
+          return { ...league, teams: [...league.teams, newTeam] };
+        } else {
+          return league;
+        }
+      })
+    );
   };
 
   const filteredLeagues = leagues.filter((league) => {
