@@ -58,6 +58,11 @@ function LeagueCard({ league, setLeagues }) {
   //   }
   // };
 
+  // suggested 
+  // const index = prevLeagues.findIndex(
+  //   (prevLeague) => prevLeague._id === league._id
+  // );
+
   const handleSave = async () => {
     try {
       const response = await fetch(

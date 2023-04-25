@@ -13,6 +13,7 @@ function AddLeagueForm({ onAdd }) {
 
   const [message, setMessage] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [showForm, setShowForm] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,6 +22,11 @@ function AddLeagueForm({ onAdd }) {
       [name]: value,
     }));
   };
+
+  const handleAddLeagueClick = () => {
+    setShowForm(!showForm);
+  };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -50,7 +56,7 @@ function AddLeagueForm({ onAdd }) {
         endDate: formData.endDate,
       },
     };
-    
+
     try {
       const response = await fetch(
         "https://ancient-coast-33215.herokuapp.com/football",
@@ -83,10 +89,14 @@ function AddLeagueForm({ onAdd }) {
       window.alert("Error submitting form. Please try again later.");
     }
   };
+
   return (
-    <div className="form-container">
-      <form onSubmit={handleSubmit}>
-        <label>
+    <div>
+    <button className="hideform" onClick={handleAddLeagueClick}>{showForm ? 'Close Form' : 'Add League'}</button>
+    {showForm && (
+      <div className="form-container">
+        <form onSubmit={handleSubmit}>
+          <label>
           League Name:
           <input
             type="text"
@@ -170,6 +180,8 @@ function AddLeagueForm({ onAdd }) {
         </div>
       )}
     </div>
-  )}
+    )}
+  </div>
+)};
 
 export default AddLeagueForm;

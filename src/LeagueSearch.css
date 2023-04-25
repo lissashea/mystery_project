@@ -150,3 +150,8 @@ button:active {
     border: solid black 5px;
     margin: 50px;
   }
+
+  button.hideform {
+    display: block;
+    margin: auto;
+  }
