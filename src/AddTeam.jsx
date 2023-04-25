@@ -1,38 +1,28 @@
 import React, { useState } from "react";
 
-const AddTeamForm = ({ onAdd }) => {
+const AddTeamForm = ({ onAddTeam }) => {
   const [name, setName] = useState("");
-  const [city, setCity] = useState("");
-
-  const handleNameChange = (event) => {
-    setName(event.target.value);
-  };
-
-  const handleCityChange = (event) => {
-    setCity(event.target.value);
-  };
+  const [code, setCode] = useState("");
+  const [area, setArea] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     try {
-      const response = await fetch("https://ancient-coast-33215.herokuapp.com/teams", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          city,
-        }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        onAdd(data);
-        setName("");
-        setCity("");
-      }
+      const response = await fetch(
+        "https://ancient-coast-33215.herokuapp.com/football",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ name, code, area }),
+        }
+      );
+      const data = await response.json();
+      onAddTeam(data);
+      setName("");
+      setCode("");
+      setArea("");
     } catch (error) {
       console.error("Error adding team:", error);
     }
@@ -42,11 +32,27 @@ const AddTeamForm = ({ onAdd }) => {
     <form onSubmit={handleSubmit}>
       <label>
         Name:
-        <input type="text" value={name} onChange={handleNameChange} />
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
       </label>
       <label>
-        City:
-        <input type="text" value={city} onChange={handleCityChange} />
+        Code:
+        <input
+          type="text"
+          value={code}
+          onChange={(e) => setCode(e.target.value)}
+        />
+      </label>
+      <label>
+        Area:
+        <input
+          type="text"
+          value={area}
+          onChange={(e) => setArea(e.target.value)}
+        />
       </label>
       <button type="submit">Add Team</button>
     </form>
