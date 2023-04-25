@@ -1,41 +1,60 @@
 import React, { useState } from "react";
-import axios from "axios";
 import "./LeagueSearch.css";
 
 function LeagueCard({ league, setLeagues }) {
   const [editing, setEditing] = useState(false);
   const [formData, setFormData] = useState(league);
+  const [message, setMessage] = useState("");
 
-  const handleDelete = () => {
-    axios
-      .delete(`https://ancient-coast-33215.herokuapp.com/football/${league.id}`)
-      .then(() => {
-        setLeagues((prevLeagues) => prevLeagues.filter((prevLeague) => prevLeague.id !== league.id));
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  const handleDelete = async () => {
+    try {
+      const response = await fetch(
+        `https://ancient-coast-33215.herokuapp.com/football/${league._id}`,
+        {
+          method: "DELETE",
+        }
+      );
+      if (response.ok) {
+        setLeagues((prevLeagues) =>
+          prevLeagues.filter((prevLeague) => prevLeague._id !== league._id)
+        );
+        setMessage(`League '${league.name}' deleted successfully!`);
+      }
+    } catch (error) {
+      console.error("Error deleting league:", error);
+    }
   };
 
   const handleEdit = () => {
     setEditing(true);
   };
 
-  const handleSave = () => {
-    axios
-      .put(`https://ancient-coast-33215.herokuapp.com/football/${league.id}`, formData)
-      .then(() => {
+  const handleSave = async () => {
+    try {
+      const response = await fetch(
+        `https://ancient-coast-33215.herokuapp.com/football/${league.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+      if (response.ok) {
         setLeagues((prevLeagues) => {
-          const index = prevLeagues.findIndex((prevLeague) => prevLeague.id === league.id);
+          const index = prevLeagues.findIndex(
+            (prevLeague) => prevLeague.id === league.id
+          );
           const updatedLeagues = [...prevLeagues];
           updatedLeagues[index] = formData;
           return updatedLeagues;
         });
         setEditing(false);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      }
+    } catch (error) {
+      console.error("Error updating league:", error);
+    }
   };
 
   const handleCancel = () => {
@@ -57,31 +76,57 @@ function LeagueCard({ league, setLeagues }) {
         <form>
           <label>
             Name:
-            <input type="text" name="name" value={formData.name} onChange={handleChange} />
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+            />
           </label>
           <label>
             Country:
-            <input type="text" name="country" value={formData.country} onChange={handleChange} />
+            <input
+              type="text"
+              name="country"
+              value={formData.country}
+              onChange={handleChange}
+            />
           </label>
           <label>
             Founded:
-            <input type="number" name="founded" value={formData.founded} onChange={handleChange} />
+            <input
+              type="number"
+              name="founded"
+              value={formData.founded}
+              onChange={handleChange}
+            />
           </label>
-          <button type="button" onClick={handleSave}>Save</button>
-          <button type="button" onClick={handleCancel}>Cancel</button>
+          <button type="button" onClick={handleSave}>
+            Save
+          </button>
+          <button type="button" onClick={handleCancel}>
+            Cancel
+          </button>
         </form>
       ) : (
         <>
-          {league.area && league.area.flag &&
+          {league.area && league.area.flag && (
             <img src={league.area.flag} alt={`${league.area.name} flag`} />
-          }
-          <p>Country: {league.area ? league.area.name : 'N/A'}</p>
+          )}
+          <p>Country: {league.area ? league.area.name : "N/A"}</p>
           <p>League Name: {league.name}</p>
           <p>Code: {league.code}</p>
-          <button type="button" onClick={handleDelete}>Delete</button>
-          <button type="button" onClick={handleEdit}>Edit</button>
+          <p>Season Start: {league.currentSeason?.startDate}</p>
+          <p>Season End: {league.currentSeason?.endDate}</p>
+          <button type="button" onClick={handleDelete}>
+            Delete
+          </button>
+          <button type="button" onClick={handleEdit}>
+            Edit
+          </button>
         </>
       )}
+      {message && <p>{message}</p>}
     </div>
   );
 }

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import LeagueCard from "./LeagueCard";
 import Select from "react-select";
 import "./LeagueSearch.css";
@@ -10,9 +9,9 @@ function LeagueSearch() {
   const [selectedOption, setSelectedOption] = useState(null);
 
   const options = [
-    { value: "name", label: "Name" },
-    { value: "code", label: "Code" },
-    { value: "area", label: "Area" },
+    { value: "name", label: "League Name" },
+    { value: "code", label: "League Code" },
+    { value: "area", label: "League Country" },
   ];
 
   const handleChange = (selectedOption) => {
@@ -26,15 +25,18 @@ function LeagueSearch() {
   useEffect(() => {
     const fetchLeagues = async () => {
       try {
-        const response = await axios.get(
+        const response = await fetch(
           "https://ancient-coast-33215.herokuapp.com/football"
         );
-        setLeagues(response.data);
+        if (!response.ok) {
+          throw new Error("Failed to fetch leagues");
+        }
+        const data = await response.json();
+        setLeagues(data);
       } catch (error) {
         console.error(error);
       }
     };
-
     fetchLeagues();
   }, []);
 
