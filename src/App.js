@@ -1,13 +1,21 @@
-import LeagueDashboard from "./LeagueDashboard.jsx";
-import React from "react";
+import React, { useState } from "react";
+import LeagueSearch from "./LeagueSearch";
+import AddLeagueForm from "./AddLeagueForm";
 
-const App = () => {
+function App() {
+  const [leagues, setLeagues] = useState([]);
+
+  const handleAdd = (newLeague) => {
+    setLeagues([...leagues, newLeague]);
+  };
+
   return (
     <div className="app">
-      <h1 style={{ color: 'black', textAlign: "center", marginBottom: "50px" }}>Current Season Details</h1>
-      <LeagueDashboard />
+      <h1>Football Leagues</h1>
+      <AddLeagueForm onAdd={handleAdd} />
+      <LeagueSearch leagues={leagues} setLeagues={setLeagues} />
     </div>
   );
-};
+}
 
 export default App;

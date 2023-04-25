@@ -1,23 +1,23 @@
-.add-team-container {
+.add-league-container {
   padding: 1rem;
   background-color: #f0f0f0;
   margin-bottom: 1rem;
 }
 
 
-.add-team-container form {
+.add-league-container form {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.add-team-container input {
+.add-league-container input {
   flex-grow: 1;
   margin-right: 10px;
   padding: 5px;
 }
 
-.add-team-container button {
+.add-league-container button {
   background-color: #4CAF50;
   color: white;
   padding: 10px;
@@ -27,6 +27,6 @@
   transition: background-color 0.3s ease;
 }
 
-.add-team-container button:hover {
+.add-league-container button:hover {
   background-color: #3e8e41;
 }

@@ -1,13 +1,47 @@
-import React from "react";
-import AddLeagueForm from "./AddLeagueForm.jsx";
+import React, { useState } from "react";
+import axios from "axios";
 
-const AddLeagueContainer = ({ onAdd }) => {
-  const handleAddLeague = (newLeague) => {
-    console.log("Adding new league:", newLeague);
-    onAdd(newLeague);
+function AddLeagueForm({ onAdd }) {
+  const [formData, setFormData] = useState({ name: "", country: "", founded: "" });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
   };
 
-  return <AddLeagueForm onAdd={handleAddLeague} />;
-};
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios
+      .post("https://ancient-coast-33215.herokuapp.com/football", formData)
+      .then((response) => {
+        console.log(response);
+        onAdd(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    setFormData({ name: "", country: "", founded: "" });
+  };
 
-export default AddLeagueContainer;
+  return (
+    <form onSubmit={handleSubmit}>
+      <label>
+        Name:
+        <input type="text" name="name" value={formData.name} onChange={handleChange} />
+      </label>
+      <label>
+        Country:
+        <input type="text" name="country" value={formData.country} onChange={handleChange} />
+      </label>
+      <label>
+        Founded:
+        <input type="number" name="founded" value={formData.founded} onChange={handleChange} />
+      </label>
+      <button type="submit">Add League</button>
+    </form>
+  );
+}
+
+export default AddLeagueForm;
