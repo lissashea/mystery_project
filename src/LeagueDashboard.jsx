@@ -10,7 +10,7 @@ const LeagueCard = ({ league, onDelete }) => {
         method: "DELETE",
       });
       if (response.ok) {
-        onDelete();
+        onDelete(league._id);
       }
     } catch (error) {
       console.error("Error deleting league:", error);
@@ -75,6 +75,10 @@ const LeagueDashboard = () => {
     fetchLeagues();
   }, []);
 
+  const handleDeleteLeague = (id) => {
+    setLeagues((prevLeagues) => prevLeagues.filter((league) => league._id !== id));
+  };
+
   const filteredLeagues = leagues.filter((league) => {
     if (!selectedOption) {
       return false;
@@ -111,8 +115,8 @@ const LeagueDashboard = () => {
       </div>
       <div className="league-cards-container">
         {filteredLeagues.map((league) => (
-          <LeagueCard key={league._id} league={league} />
-        ))}
+          <LeagueCard key={league._id} league={league} onDelete={handleDeleteLeague} />
+          ))}
       </div>
     </div>
   );
