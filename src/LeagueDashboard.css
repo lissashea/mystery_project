@@ -33,3 +33,7 @@
   justify-content: center;
   margin: 20px 0;
 }
+
+.delete-btn {
+  display: block;
+}
