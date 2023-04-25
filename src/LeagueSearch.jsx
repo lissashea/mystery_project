@@ -6,7 +6,10 @@ import "./LeagueSearch.css";
 function LeagueSearch() {
   const [leagues, setLeagues] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption, setSelectedOption] = useState({
+    value: "name",
+    label: "League Name",
+  });
 
   const options = [
     { value: "name", label: "League Name" },
@@ -20,6 +23,11 @@ function LeagueSearch() {
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
+  };
+
+  const handleSearchButtonClick = (event) => {
+    event.preventDefault();
+    // Do the search based on selectedOption and searchTerm
   };
 
   useEffect(() => {
@@ -69,25 +77,30 @@ function LeagueSearch() {
 
   return (
     <div className="league-search">
-      <div className="search-container">
-        <input
-          type="text"
-          placeholder="Search for a league..."
-          value={searchTerm}
-          onChange={handleSearch}
-        />
-        <Select
-          options={options}
-          onChange={handleChange}
-          defaultValue={options[0]}
-        />
-      </div>
-      {filteredLeagues.length > 0 && (
+      <form onSubmit={handleSearchButtonClick}>
+        <div className="search-container">
+          <input
+            type="text"
+            placeholder={`Search by ${selectedOption.label}...`}
+            value={searchTerm}
+            onChange={handleSearch}
+          />
+          <Select
+            options={options}
+            value={selectedOption}
+            onChange={handleChange}
+          />
+          <button type="submit">Search</button>
+        </div>
+      </form>
+      {filteredLeagues.length > 0 ? (
         <div className="league-cards-container">
           {filteredLeagues.map((league) => (
             <LeagueCard key={league._id} league={league} />
           ))}
         </div>
+      ) : (
+        <p>No results found.</p>
       )}
     </div>
   );
