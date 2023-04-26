@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import "./LeagueSearch.css";
 
 function LeagueCard({ league, setLeagues }) {
@@ -8,13 +9,10 @@ function LeagueCard({ league, setLeagues }) {
 
   const handleDelete = async () => {
     try {
-      const response = await fetch(
-        `https://ancient-coast-33215.herokuapp.com/football/${league._id}`,
-        {
-          method: "DELETE",
-        }
+      const response = await axios.delete(
+        `https://ancient-coast-33215.herokuapp.com/football/${league._id}`
       );
-      if (response.ok) {
+      if (response.status === 200) {
         setLeagues((prevLeagues) =>
           prevLeagues.filter((prevLeague) => prevLeague._id !== league._id)
         );
@@ -26,10 +24,14 @@ function LeagueCard({ league, setLeagues }) {
     window.location.reload();
   };
 
-  const handleEdit = () => {
+  const handleEdit = (id) => {
+    // set the editing state to true and update the formData
     setEditing(true);
+    setFormData({
+      ...league, // set formData to the current league
+      id: id, // add the id to the formData
+    });
   };
-
   const handleSave = async () => {
     try {
       // Only allow the "plan" property to be updated
@@ -43,23 +45,17 @@ function LeagueCard({ league, setLeagues }) {
         throw new Error("Invalid 'plan' value");
       }
 
-      const response = await fetch(
+      const response = await axios.put(
         `https://ancient-coast-33215.herokuapp.com/football/${league._id}`,
+        updatedLeague,
         {
-          method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(updatedLeague),
         }
       );
       console.log(response); // add this line to log the response object
-      if (response.ok) {
-        setMessage(`Plan '${formData.plan}' added to league '${league.name}'`);
-      } else {
-        throw new Error("PUT request failed");
-      }
-      if (response.ok) {
+      if (response.status === 200) {
         setMessage(`Plan '${formData.plan}' added to league '${league.name}'`);
       } else {
         throw new Error("PUT request failed");
