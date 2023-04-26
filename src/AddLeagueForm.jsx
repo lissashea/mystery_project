@@ -109,7 +109,7 @@ function AddLeagueForm({ onAdd }) {
           />
         </label>
         <label>
-          Code:
+          League Code:
           <input
             type="text"
             name="code"
@@ -133,11 +133,11 @@ function AddLeagueForm({ onAdd }) {
           />
         </label>
         <label>
-          Code:
+          Country Code:
           <input
             type="text"
             name="areaCode"
-            placeholder="league code"
+            placeholder="location code"
             value={formData.areaCode}
             onChange={handleChange}
             className="small-placeholder"
