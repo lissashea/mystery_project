@@ -30,41 +30,19 @@ function LeagueCard({ league, setLeagues }) {
     setEditing(true);
   };
 
-  // const handleSave = async () => {
-  //   try {
-  //     const response = await fetch(
-  //       `https://ancient-coast-33215.herokuapp.com/football/${league.id}`,
-  //       {
-  //         method: "PUT",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify(formData),
-  //       }
-  //     );
-  //     if (response.ok) {
-  //       setLeagues((prevLeagues) => {
-  //         const index = prevLeagues.findIndex(
-  //           (prevLeague) => prevLeague.id === league.id
-  //         );
-  //         const updatedLeagues = [...prevLeagues];
-  //         updatedLeagues[index] = formData;
-  //         return updatedLeagues;
-  //       });
-  //       setEditing(false);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error updating league:", error);
-  //   }
-  // };
-
-  // suggested
-  // const index = prevLeagues.findIndex(
-  //   (prevLeague) => prevLeague._id === league._id
-  // );
-
   const handleSave = async () => {
     try {
+      // Only allow the "plan" property to be updated
+      const updatedLeague = {
+        plan: formData.plan,
+      };
+
+      // Check that the new "plan" value is valid
+      const validPlans = ["TIER_FOUR", "TIER_THREE", "TIER_TWO", "TIER_ONE"];
+      if (!validPlans.includes(formData.plan)) {
+        throw new Error("Invalid 'plan' value");
+      }
+
       const response = await fetch(
         `https://ancient-coast-33215.herokuapp.com/football/${league._id}`,
         {
@@ -72,22 +50,23 @@ function LeagueCard({ league, setLeagues }) {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(formData),
+          body: JSON.stringify(updatedLeague),
         }
       );
+      console.log(response); // add this line to log the response object
       if (response.ok) {
-        setLeagues((prevLeagues) => {
-          const index = prevLeagues.findIndex(
-            (prevLeague) => prevLeague.id === league._id
-          );
-          const updatedLeagues = [...prevLeagues];
-          updatedLeagues[index] = formData;
-          return updatedLeagues;
-        });
-        setEditing(false);
+        setMessage(`Plan '${formData.plan}' added to league '${league.name}'`);
+      } else {
+        throw new Error("PUT request failed");
+      }
+      if (response.ok) {
+        setMessage(`Plan '${formData.plan}' added to league '${league.name}'`);
+      } else {
+        throw new Error("PUT request failed");
       }
     } catch (error) {
       console.error("Error updating league:", error);
+      setMessage("Failed to update league");
     }
   };
 
@@ -97,7 +76,6 @@ function LeagueCard({ league, setLeagues }) {
   };
 
   const handleChange = (e) => {
-    console.log(typeof e.target.value);
     setFormData((prevFormData) => ({
       ...prevFormData,
       [e.target.name]: e.target.value,
@@ -110,49 +88,13 @@ function LeagueCard({ league, setLeagues }) {
       {editing ? (
         <form>
           <label>
-            Name:
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-            />
-          </label>
-          <label>
-            Country:
-            <input
-              type="text"
-              name="areaName"
-              value={formData.areaName}
-              onChange={handleChange}
-            />
-          </label>
-          <label>
-            League Abbreviation:
-            <input
-              type="text"
-              name="code"
-              value={formData.code}
-              onChange={handleChange}
-            />
-          </label>
-          <label>
-            Start-Date:
-            <input
-              type="string"
-              name="startDate"
-              value={formData.currentSeason?.startDate}
-              onChange={handleChange}
-            />
-          </label>
-          <label>
-            End-Date:
-            <input
-              type="string"
-              name="endDate"
-              value={formData.currentSeason?.endDate}
-              onChange={handleChange}
-            />
+            Plan:
+            <select name="plan" value={formData.plan} onChange={handleChange}>
+              <option value="TIER_FOUR">Tier 4</option>
+              <option value="TIER_THREE">Tier 3</option>
+              <option value="TIER_TWO">Tier 2</option>
+              <option value="TIER_ONE">Tier 1</option>
+            </select>
           </label>
           <button type="button" onClick={handleSave}>
             Save
