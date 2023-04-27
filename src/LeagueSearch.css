@@ -58,7 +58,7 @@ form, .league-cards-container {
 }
 
 .league-card p {
-  white-space: nowrap;
+  /* white-space: nowrap; */
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -177,3 +177,11 @@ button:active {
   label {
     margin-top: 4px;
   }
+
+  .confirmation-message {
+    color: red;
+    font-weight: bold;
+    font-size: 1.2rem;
+    /* add other CSS rules as needed */
+  }
+  

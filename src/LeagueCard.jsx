@@ -22,8 +22,12 @@ function LeagueCard({ league, setLeagues }) {
 
   const handleDelete = async () => {
     if (!confirmed) {
-      setMessage(`Are you sure you want to delete '${league.name}'?`); // show confirmation message
-      setConfirmed(true); // set confirmed to true to enable the next click
+      setMessage(
+        <p className="confirmation-message">
+          Are you sure you want to delete '{league.name}'?
+        </p>
+      );
+      setConfirmed(true);
       return;
     }
 
@@ -59,8 +63,12 @@ function LeagueCard({ league, setLeagues }) {
 
   const handleSave = async () => {
     if (!confirmed) {
-      setMessage(`Are you sure you want to save changes to '${league.name}'?`); // show confirmation message
-      setConfirmed(true); // set confirmed to true to enable the next click
+      setMessage(
+        <p className="confirmation-message">
+          Are you sure you want to edit '{league.name}'?
+        </p>
+      );
+      setConfirmed(true);
       return;
     }
 
