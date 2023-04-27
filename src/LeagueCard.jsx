@@ -4,8 +4,20 @@ import "./LeagueSearch.css";
 
 function LeagueCard({ league, setLeagues }) {
   const [editing, setEditing] = useState(false);
-  const [formData, setFormData] = useState(league);
   const [message, setMessage] = useState("");
+  
+  const [formData, setFormData] = useState({
+    name: league?.name,
+    code: league?.code,
+    area: {
+      name: league?.area?.name,
+      code: league?.area?.code,
+    },
+    currentSeason: {
+      startDate: league?.currentSeason?.startDate,
+      endDate: league?.currentSeason?.endDate,
+    },
+  });
 
   const handleDelete = async () => {
     try {
@@ -25,27 +37,29 @@ function LeagueCard({ league, setLeagues }) {
   };
 
   const handleEdit = (id) => {
-    // set the editing state to true and update the formData
     setEditing(true);
     setFormData({
-      ...league, // set formData to the current league
-      id: id, // add the id to the formData
+      ...league,
+      id: id,
     });
   };
 
   const handleSave = async () => {
     try {
-      // Only allow the "plan" property to be updated
+      // Remove the "flag" property from the area object
       const updatedLeague = {
-        plan: formData.plan,
+        name: formData.name,
+        code: formData.code,
+        area: {
+          name: formData.area.name,
+          code: formData.area.code,
+        },
+        currentSeason: {
+          startDate: formData.currentSeason.startDate,
+          endDate: formData.currentSeason.endDate,
+        },
       };
-
-      // Check that the new "plan" value is valid
-      const validPlans = ["TIER_FOUR", "TIER_THREE", "TIER_TWO", "TIER_ONE"];
-      if (!validPlans.includes(formData.plan)) {
-        throw new Error("Invalid 'plan' value");
-      }
-
+  
       const response = await axios.put(
         `https://ancient-coast-33215.herokuapp.com/football/${league._id}`,
         updatedLeague,
@@ -55,9 +69,11 @@ function LeagueCard({ league, setLeagues }) {
           },
         }
       );
-      console.log(response); // add this line to log the response object
+  
+      console.log(response);
+  
       if (response.status === 200) {
-        setMessage(`Plan '${formData.plan}' added to league '${league.name}'`);
+        setMessage(`League '${updatedLeague.name}' updated successfully`);
       } else {
         throw new Error("PUT request failed");
       }
@@ -68,15 +84,40 @@ function LeagueCard({ league, setLeagues }) {
   };
 
   const handleCancel = () => {
-    setFormData(league);
+    setFormData({
+      name: league.name,
+      code: league.code,
+      area: {
+        name: league.area.name,
+        code: league.area.code,
+      },
+      currentSeason: {
+        startDate: league.currentSeason?.startDate,
+        endDate: league.currentSeason?.endDate,
+      },
+    });
     setEditing(false);
   };
 
   const handleChange = (e) => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [e.target.name]: e.target.value,
-    }));
+    const name = e.target.name;
+    const value = e.target.value;
+
+    if (name.includes(".")) {
+      const [parent, child] = name.split(".");
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [parent]: {
+          ...prevFormData[parent],
+          [child]: value,
+        },
+      }));
+    } else {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [name]: value,
+      }));
+    }
   };
 
   return (
@@ -85,13 +126,49 @@ function LeagueCard({ league, setLeagues }) {
       {editing ? (
         <form>
           <label>
-            Plan:
-            <select name="plan" value={formData.plan} onChange={handleChange}>
-              <option value="TIER_FOUR">Tier 4</option>
-              <option value="TIER_THREE">Tier 3</option>
-              <option value="TIER_TWO">Tier 2</option>
-              <option value="TIER_ONE">Tier 1</option>
-            </select>
+            League Name:
+            <input
+              type="text"
+              name="name"
+              value={formData.name || ""}
+              onChange={handleChange}
+            />
+          </label>
+          <label>
+            Country:
+            <input
+              type="text"
+              name="area.name"
+              value={formData.area?.name || ""}
+              onChange={handleChange}
+            />
+          </label>
+          <label>
+            League Code:
+            <input
+              type="text"
+              name="code"
+              value={formData.code || ""}
+              onChange={handleChange}
+            />
+          </label>
+          <label>
+            Season Start:
+            <input
+              type="text"
+              name="currentSeason.startDate"
+              value={formData.currentSeason?.startDate || ""}
+              onChange={handleChange}
+            />
+          </label>
+          <label>
+            Season End:
+            <input
+              type="text"
+              name="currentSeason.endDate"
+              value={formData.currentSeason?.endDate || ""}
+              onChange={handleChange}
+            />
           </label>
           <button type="button" onClick={handleSave}>
             Save
