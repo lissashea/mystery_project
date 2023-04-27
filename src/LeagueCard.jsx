@@ -5,7 +5,8 @@ import "./LeagueSearch.css";
 function LeagueCard({ league, setLeagues }) {
   const [editing, setEditing] = useState(false);
   const [message, setMessage] = useState("");
-  
+  const [confirmed, setConfirmed] = useState(false); // new state variable
+
   const [formData, setFormData] = useState({
     name: league?.name,
     code: league?.code,
@@ -20,6 +21,12 @@ function LeagueCard({ league, setLeagues }) {
   });
 
   const handleDelete = async () => {
+    if (!confirmed) {
+      setMessage(`Are you sure you want to delete '${league.name}'?`); // show confirmation message
+      setConfirmed(true); // set confirmed to true to enable the next click
+      return;
+    }
+
     try {
       const response = await axios.delete(
         `http://localhost:3000/football/${league._id}`
@@ -29,7 +36,12 @@ function LeagueCard({ league, setLeagues }) {
           prevLeagues.filter((prevLeague) => prevLeague._id !== league._id)
         );
         setMessage(`League '${league.name}' deleted successfully!`);
-        alert("League card deleted");
+        setConfirmed(false); // reset confirmed after the action is performed
+
+        // add a delay and show an alert
+        setTimeout(() => {
+          alert(`League '${league.name}' deleted successfully!`);
+        }, 3000);
       }
     } catch (error) {
       console.error("Error deleting league:", error);
@@ -46,6 +58,12 @@ function LeagueCard({ league, setLeagues }) {
   };
 
   const handleSave = async () => {
+    if (!confirmed) {
+      setMessage(`Are you sure you want to save changes to '${league.name}'?`); // show confirmation message
+      setConfirmed(true); // set confirmed to true to enable the next click
+      return;
+    }
+
     try {
       // Remove the "flag" property from the area object
       const updatedLeague = {
@@ -61,7 +79,7 @@ function LeagueCard({ league, setLeagues }) {
         },
       };
       console.log(league._id);
-  
+
       const response = await axios.put(
         `http://localhost:3000/football/${league._id}`,
         updatedLeague,
@@ -71,15 +89,16 @@ function LeagueCard({ league, setLeagues }) {
           },
         }
       );
-  
+
       console.log(response);
-  
+
       if (response.status === 200) {
-        setMessage(`League '${updatedLeague.name}' updated successfully`);
+        setConfirmed(false); // reset confirmed after the action is performed
+        // add a delay and show an alert
+        setTimeout(() => {
+          alert(`League '${updatedLeague.name}' updated successfully!`);
+        }, 1000);
         setEditing(false);
-      //  setFormData({
-      //    ...league,updatedLeague
-        //})
         window.location.reload();
       } else {
         throw new Error("PUT request failed");
@@ -178,7 +197,7 @@ function LeagueCard({ league, setLeagues }) {
             />
           </label>
           <button type="button" onClick={handleSave}>
-            Save
+            {confirmed ? "Confirmed Save" : "Save"}{" "}
           </button>
           <button type="button" onClick={handleCancel}>
             Cancel
@@ -195,7 +214,7 @@ function LeagueCard({ league, setLeagues }) {
           <p>Season Start: {league.currentSeason?.startDate}</p>
           <p>Season End: {league.currentSeason?.endDate}</p>
           <button type="button" onClick={handleDelete}>
-            Delete
+            {confirmed ? "Confirmed Delete" : "Delete"}{" "}
           </button>
           <button type="button" onClick={() => handleEdit(league._id)}>
             Edit
