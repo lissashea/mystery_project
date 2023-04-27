@@ -22,13 +22,14 @@ function LeagueCard({ league, setLeagues }) {
   const handleDelete = async () => {
     try {
       const response = await axios.delete(
-        `https://ancient-coast-33215.herokuapp.com/football/${league._id}`
+        `http://localhost:3000/football/${league._id}`
       );
       if (response.status === 200) {
         setLeagues((prevLeagues) =>
           prevLeagues.filter((prevLeague) => prevLeague._id !== league._id)
         );
         setMessage(`League '${league.name}' deleted successfully!`);
+        alert("League card deleted");
       }
     } catch (error) {
       console.error("Error deleting league:", error);
@@ -59,9 +60,10 @@ function LeagueCard({ league, setLeagues }) {
           endDate: formData.currentSeason.endDate,
         },
       };
+      console.log(league._id);
   
       const response = await axios.put(
-        `https://ancient-coast-33215.herokuapp.com/football/${league._id}`,
+        `http://localhost:3000/football/${league._id}`,
         updatedLeague,
         {
           headers: {
@@ -74,6 +76,11 @@ function LeagueCard({ league, setLeagues }) {
   
       if (response.status === 200) {
         setMessage(`League '${updatedLeague.name}' updated successfully`);
+        setEditing(false);
+      //  setFormData({
+      //    ...league,updatedLeague
+        //})
+        window.location.reload();
       } else {
         throw new Error("PUT request failed");
       }

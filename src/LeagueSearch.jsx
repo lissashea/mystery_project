@@ -35,7 +35,7 @@ function LeagueSearch() {
     const fetchLeagues = async () => {
       try {
         const response = await axios.get(
-          "https://ancient-coast-33215.herokuapp.com/football"
+          "http://localhost:3000/football"
         );
         setLeagues(response.data);
       } catch (error) {
