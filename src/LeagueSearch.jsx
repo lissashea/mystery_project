@@ -97,7 +97,7 @@ function LeagueSearch() {
           ))}
         </div>
       ) : (
-        <p>No results found.</p>
+        <p className="no-result">No results found.</p>
       )}
     </div>
   );

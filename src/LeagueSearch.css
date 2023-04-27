@@ -12,7 +12,7 @@ input[type="text"] {
   border: none;
   border-bottom: 2px solid #ccc;
   font-size: 1.2rem;
-  margin-right: 1rem;
+  /* margin-right: 1rem; */
 }
 
 .league-list {
@@ -40,7 +40,7 @@ form, .league-cards-container {
   border-radius: 4px;
   padding: 16px;
   margin-bottom: 16px;
-  width: 300px;
+  width: 325px;
   height: max-content; /* or any other value that works for you */
   box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.3);
   transition: all 0.3s ease;
@@ -58,7 +58,7 @@ form, .league-cards-container {
 }
 
 .league-card p {
-  /* white-space: nowrap; */
+  font-family: Georgia, 'Times New Roman', Times, serif;/* white-space: nowr */
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -182,6 +182,28 @@ button:active {
     color: red;
     font-weight: bold;
     font-size: 1.2rem;
+    background-color: yellow;
     /* add other CSS rules as needed */
   }
+
+  .no-result {
+    text-align: center;
+  }
   
+  form, .league-cards-container {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    /* text-align: center; */
+    margin-top: 10px;
+    margin-bottom: 10px;
+    align-items: baseline;
+    flex-wrap: wrap;
+  }
+
+  .submit-cancel-wrapper {
+    display: flex;
+    width: fit-content;
+    margin-top: 10px;
+  }
+

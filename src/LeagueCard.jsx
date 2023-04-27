@@ -30,7 +30,6 @@ function LeagueCard({ league, setLeagues }) {
       setConfirmed(true);
       return;
     }
-
     try {
       const response = await axios.delete(
         `http://localhost:3000/football/${league._id}`
@@ -40,9 +39,8 @@ function LeagueCard({ league, setLeagues }) {
           prevLeagues.filter((prevLeague) => prevLeague._id !== league._id)
         );
         setMessage(`League '${league.name}' deleted successfully!`);
-        setConfirmed(false); // reset confirmed after the action is performed
-
-        // add a delay and show an alert
+        setConfirmed(false); // reset fter the action is performed
+        // add a delay and show anrt
         setTimeout(() => {
           alert(`League '${league.name}' deleted successfully!`);
         }, 3000);
@@ -71,9 +69,7 @@ function LeagueCard({ league, setLeagues }) {
       setConfirmed(true);
       return;
     }
-
-    try {
-      // Remove the "flag" property from the area object
+    try { // Remove the "flag" property from the area object
       const updatedLeague = {
         name: formData.name,
         code: formData.code,
@@ -204,12 +200,18 @@ function LeagueCard({ league, setLeagues }) {
               onChange={handleChange}
             />
           </label>
-          <button type="button" onClick={handleSave}>
-            {confirmed ? "Confirmed Save" : "Save"}{" "}
-          </button>
-          <button type="button" onClick={handleCancel}>
-            Cancel
-          </button>
+          <div className="submit-cancel-wrapper">
+            <button className="save-button" type="submit" onClick={handleSave}>
+              {confirmed ? "Confirmed Save" : "Save"}{" "}
+            </button>
+            <button
+              type="submit"
+              className="cancel-button"
+              onClick={handleCancel}
+            >
+              Cancel
+            </button>
+          </div>
         </form>
       ) : (
         <>
