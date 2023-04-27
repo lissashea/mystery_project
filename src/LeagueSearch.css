@@ -29,6 +29,10 @@ form, .league-cards-container {
   justify-content: center;
   align-items: center;
   align-content: center;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  line-height: 2.5;
 }
 
 .league-card {
@@ -139,6 +143,9 @@ button:active {
 .form-container p {
   margin-top: 10px;
   color: green;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .submitnewbutton {
@@ -159,4 +166,14 @@ button:active {
     display: block;
     margin: auto;
     margin-bottom: 40px;
+  }
+
+  .success-message {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  label {
+    margin-top: 4px;
   }

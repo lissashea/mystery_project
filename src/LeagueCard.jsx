@@ -32,6 +32,7 @@ function LeagueCard({ league, setLeagues }) {
       id: id, // add the id to the formData
     });
   };
+
   const handleSave = async () => {
     try {
       // Only allow the "plan" property to be updated
@@ -112,7 +113,7 @@ function LeagueCard({ league, setLeagues }) {
           <button type="button" onClick={handleDelete}>
             Delete
           </button>
-          <button type="button" onClick={handleEdit}>
+          <button type="button" onClick={() => handleEdit(league._id)}>
             Edit
           </button>
         </>

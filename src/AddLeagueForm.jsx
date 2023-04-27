@@ -161,7 +161,7 @@ function AddLeagueForm({ onAdd }) {
           {submitted && (
             <div className="success-message">
               <p>Form submitted successfully!</p>
-              <button onClick={() => window.location.reload()}>OK</button>
+              <button className="submit-form-ok" onClick={() => window.location.reload()}>OK</button>
             </div>
           )}
         </div>

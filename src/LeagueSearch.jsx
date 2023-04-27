@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import LeagueCard from "./LeagueCard";
 import Select from "react-select";
 import "./LeagueSearch.css";
+import axios from "axios";
 
 function LeagueSearch() {
   const [leagues, setLeagues] = useState([]);
@@ -33,14 +34,10 @@ function LeagueSearch() {
   useEffect(() => {
     const fetchLeagues = async () => {
       try {
-        const response = await fetch(
+        const response = await axios.get(
           "https://ancient-coast-33215.herokuapp.com/football"
         );
-        if (!response.ok) {
-          throw new Error("Failed to fetch leagues");
-        }
-        const data = await response.json();
-        setLeagues(data);
+        setLeagues(response.data);
       } catch (error) {
         console.error(error);
       }
