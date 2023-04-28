@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "./LeagueSearch.css";
+import Swal from 'sweetalert2'
 
-function LeagueCard({ league, setLeagues }) {
+function LeagueCard({ league, setLeagues , fetchAgain }) {
   const [editing, setEditing] = useState(false);
-  const [message, setMessage] = useState("");
-  const [confirmed, setConfirmed] = useState(false); // new state variable
-
   const [formData, setFormData] = useState({
     name: league?.name,
     code: league?.code,
@@ -20,35 +18,57 @@ function LeagueCard({ league, setLeagues }) {
     },
   });
 
+
   const handleDelete = async () => {
-    if (!confirmed) {
-      setMessage(
-        <p className="confirmation-message">
-          Are you sure you want to delete '{league.name}'?
-        </p>
-      );
-      setConfirmed(true);
-      return;
-    }
     try {
-      const response = await axios.delete(
-        `http://localhost:3000/football/${league._id}`
-      );
-      if (response.status === 200) {
-        setLeagues((prevLeagues) =>
-          prevLeagues.filter((prevLeague) => prevLeague._id !== league._id)
-        );
-        setMessage(`League '${league.name}' deleted successfully!`);
-        setConfirmed(false); // reset fter the action is performed
-        // add a delay and show anrt
-        setTimeout(() => {
-          alert(`League '${league.name}' deleted successfully!`);
-        }, 3000);
-      }
+      const alertt = Swal.mixin({
+        customClass: {
+          
+          confirmButton: 'btn btn-success',
+          cancelButton: 'btn btn-danger'
+        },
+        buttonsStyling: false
+      })
+      
+      Swal.fire({
+        title: `Are you sure to delete ${league.name} of ${league.area.name}`,
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No, cancel!',
+        reverseButtons: true
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          const response = await axios.delete(
+            `http://localhost:3000/football/${league._id}`
+          );
+          if (response.status === 200) {
+            alertt.fire(
+              'Deleted!',
+              `${league.name} has been deleted!` ,
+              'success'
+            ).then((res)=>{
+              fetchAgain();
+            })
+          }
+       
+        } else if (
+          /* Read more about handling dismissals below */
+          result.dismiss === Swal.DismissReason.cancel
+        ) {
+          alertt.fire(
+            'Cancelled',
+            `${league.name} is safe :)`,
+            'error'
+          )
+        }
+      })
+      
     } catch (error) {
       console.error("Error deleting league:", error);
     }
-    window.location.reload();
+   
   };
 
   const handleEdit = (id) => {
@@ -60,16 +80,8 @@ function LeagueCard({ league, setLeagues }) {
   };
 
   const handleSave = async () => {
-    if (!confirmed) {
-      setMessage(
-        <p className="confirmation-message">
-          Are you sure you want to edit '{league.name}'?
-        </p>
-      );
-      setConfirmed(true);
-      return;
-    }
-    try { // Remove the "flag" property from the area object
+    try {
+      // Remove the "flag" property from the area object
       const updatedLeague = {
         name: formData.name,
         code: formData.code,
@@ -82,7 +94,6 @@ function LeagueCard({ league, setLeagues }) {
           endDate: formData.currentSeason.endDate,
         },
       };
-      console.log(league._id);
 
       const response = await axios.put(
         `http://localhost:3000/football/${league._id}`,
@@ -92,24 +103,31 @@ function LeagueCard({ league, setLeagues }) {
             "Content-Type": "application/json",
           },
         }
-      );
-
-      console.log(response);
-
+      ); 
       if (response.status === 200) {
-        setConfirmed(false); // reset confirmed after the action is performed
-        // add a delay and show an alert
-        setTimeout(() => {
-          alert(`League '${updatedLeague.name}' updated successfully!`);
-        }, 1000);
-        setEditing(false);
-        window.location.reload();
+        Swal.fire({
+          icon: 'success',
+          title: 'Success.',
+
+        }).then((res)=>{
+          setEditing(false);
+          fetchAgain();
+        })
+
+      //  window.location.reload();
       } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!',
+          footer: '<a href="">Why do I have this issue?</a>'
+        })
         throw new Error("PUT request failed");
+        
       }
     } catch (error) {
       console.error("Error updating league:", error);
-      setMessage("Failed to update league");
+
     }
   };
 
@@ -200,18 +218,12 @@ function LeagueCard({ league, setLeagues }) {
               onChange={handleChange}
             />
           </label>
-          <div className="submit-cancel-wrapper">
-            <button className="save-button" type="submit" onClick={handleSave}>
-              {confirmed ? "Confirmed Save" : "Save"}{" "}
-            </button>
-            <button
-              type="submit"
-              className="cancel-button"
-              onClick={handleCancel}
-            >
-              Cancel
-            </button>
-          </div>
+          <button type="button" onClick={handleSave}>
+            Save
+          </button>
+          <button type="button" onClick={handleCancel}>
+            Cancel
+          </button>
         </form>
       ) : (
         <>
@@ -224,14 +236,14 @@ function LeagueCard({ league, setLeagues }) {
           <p>Season Start: {league.currentSeason?.startDate}</p>
           <p>Season End: {league.currentSeason?.endDate}</p>
           <button type="button" onClick={handleDelete}>
-            {confirmed ? "Confirmed Delete" : "Delete"}{" "}
+            Delete
           </button>
           <button type="button" onClick={() => handleEdit(league._id)}>
             Edit
           </button>
         </>
       )}
-      {message && <p>{message}</p>}
+   
     </div>
   );
 }

@@ -3,8 +3,6 @@ import AddLeagueForm from "./AddLeagueForm.jsx";
 import LeagueSearch from "./LeagueSearch.jsx";
 
 
-
-
 function App() {
   const [leagues, setLeagues] = useState([]);
 
