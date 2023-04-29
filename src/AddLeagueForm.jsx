@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Swal from 'sweetalert2';
 
-function AddLeagueForm({ onAdd }) {
+function AddLeagueForm({ onAdd, fetchAgain }) {
   const [formData, setFormData] = useState({
     name: "",
     code: "",
@@ -15,6 +16,7 @@ function AddLeagueForm({ onAdd }) {
   const [message, setMessage] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [showForm, setShowForm] = useState(false);
+  const [leagues, setLeagues] = useState([]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,7 +32,7 @@ function AddLeagueForm({ onAdd }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (
       !formData.name ||
       !formData.code ||
@@ -42,7 +44,7 @@ function AddLeagueForm({ onAdd }) {
       setMessage("Please fill out all fields");
       return;
     }
-
+  
     const newLeague = {
       name: formData.name,
       code: formData.code,
@@ -56,7 +58,7 @@ function AddLeagueForm({ onAdd }) {
         endDate: formData.endDate,
       },
     };
-
+  
     try {
       const response = await axios.post(
         "http://localhost:3000/football",
@@ -72,13 +74,39 @@ function AddLeagueForm({ onAdd }) {
         startDate: "",
         endDate: "",
       });
-      window.alert("Form submitted successfully!");
-      setSubmitted(true);
+      Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: 'Form submitted successfully!',
+        confirmButtonText: 'OK'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          setSubmitted(true);
+          fetchAgain();
+        }
+      });
     } catch (error) {
       console.error(error);
-      window.alert("Error submitting form. Please try again later.");
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Error submitting form. Please try again later.'
+      });
     }
   };
+
+  useEffect(() => {
+    const fetchAgain = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/football");
+        setLeagues(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchAgain();
+  }, [submitted]);
+
   return (
     <div>
       <button className="hideform" onClick={handleAddLeagueClick}>
@@ -158,12 +186,6 @@ function AddLeagueForm({ onAdd }) {
             </button>
           </form>
           {message && <p>{message}</p>}
-          {submitted && (
-            <div className="success-message">
-              <p>Form submitted successfully!</p>
-              <button className="submit-form-ok" onClick={() => window.location.reload()}>OK</button>
-            </div>
-          )}
         </div>
       )}
     </div>

@@ -30,20 +30,20 @@ function LeagueSearch() {
     event.preventDefault();
     // Do the search based on selectedOption and searchTerm
   };
-
+  const fetchLeagues = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:3000/football"
+      );
+      setLeagues(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   useEffect(() => {
-    const fetchLeagues = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:3000/football"
-        );
-        setLeagues(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
     fetchLeagues();
-  }, []);
+  }, [leagues]);
+
 
   const filteredLeagues = leagues.filter((league) => {
     if (!selectedOption) {
@@ -93,11 +93,11 @@ function LeagueSearch() {
       {filteredLeagues.length > 0 ? (
         <div className="league-cards-container">
           {filteredLeagues.map((league) => (
-            <LeagueCard key={league._id} league={league} />
+            <LeagueCard key={league._id} league={league} fetchAgain={fetchLeagues} />
           ))}
         </div>
       ) : (
-        <p className="no-result">No results found.</p>
+        <p>No results found.</p>
       )}
     </div>
   );
