@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./LeagueSearch.css";
 import Swal from 'sweetalert2'
+import "./LeagueCard.css";
 
-function LeagueCard({ league, setLeagues , fetchAgain }) {
+function LeagueCard({ league, fetchAgain }) {
   const [editing, setEditing] = useState(false);
   const [formData, setFormData] = useState({
     name: league?.name,
@@ -113,8 +114,6 @@ function LeagueCard({ league, setLeagues , fetchAgain }) {
           setEditing(false);
           fetchAgain();
         })
-
-      //  window.location.reload();
       } else {
         Swal.fire({
           icon: 'error',

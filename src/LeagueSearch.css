@@ -1,90 +1,7 @@
-* {
-  font-family: Georgia, 'Times New Roman', Times, serif;
-}
-
-h1 {
-  text-align: center;
-}
-
-input[type="text"] {
-  flex: 1;
-  padding: 0.5rem;
-  border: none;
-  border-bottom: 2px solid #ccc;
-  font-size: 1.2rem;
-  margin-right: 1rem;
-}
-
-.league-list {
-  display: none;
-}
-
-.league-list.show {
-  display: block;
-}
-
-form, .league-cards-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
-  text-align: center;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  line-height: 2.5;
-}
-
-.league-card {
-  border: 1px solid #ccc;
-  border-radius: 4px;
+.league-search {
   padding: 16px;
-  margin-bottom: 16px;
-  width: 300px;
-  height: max-content; /* or any other value that works for you */
-  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.3);
-  transition: all 0.3s ease;
-}
-
-.league-card:hover {
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
-  transform: translateY(-2px);
-}
-
-.league-card img {
-  max-width: 100%;
-  height: auto;
-  object-fit: contain;
-}
-
-.league-card p {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-h2 {
-  margin-top: 0;
-  font-size: 24px;
-}
-
-button {
-  padding: 8px 16px;
-  font-size: 16px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  background-color: #007bff;
-  color: #fff;
-  margin-right: 8px;
-}
-
-button:hover {
-  background-color: #0062cc;
-}
-
-.search-bar.focused + .league-list {
-  display: block;
+  background-color: #42b883; /* soccer green color */
+  color: #fff; /* white text */
 }
 
 .search-container {
@@ -93,8 +10,34 @@ button:hover {
   margin-bottom: 1rem;
 }
 
-.select-container {
-  position: relative;
+.search-container input[type="text"] {
+  flex: 1;
+  padding: 0.5rem;
+  border: none;
+  border-bottom: 2px solid #fff;
+  font-size: 1.2rem;
+  margin-right: 1rem;
+  background-color: transparent;
+  color: #fff;
+}
+
+.search-container input[type="text"]::placeholder {
+  color: #fff;
+}
+
+.search-container button.searchbutton {
+  padding: 0.5rem 1rem;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 0.5rem;
+  background-color: #fff;
+  color: #42b883; /* soccer green color */
+  margin-left: 1rem;
+}
+
+.search-container button.searchbutton:hover {
+  background-color: #333; /* dark gray color */
+  color: #fff;
 }
 
 .select-container select {
@@ -104,6 +47,7 @@ button:hover {
   background-color: #fff;
   border-radius: 0;
   appearance: none;
+  color: #333; /* dark text color */
 }
 
 .select-container::after {
@@ -116,64 +60,6 @@ button:hover {
   height: 0;
   border-style: solid;
   border-width: 0.5rem 0.5rem 0 0.5rem;
-  border-color: #ccc transparent transparent transparent;
+  border-color: #fff transparent transparent transparent;
   pointer-events: none;
 }
-
-button {
-  padding: 0.5rem 1rem;
-  font-size: 1.2rem;
-  border: none;
-  border-radius: 0.5rem;
-  background-color: #007bff;
-  color: #fff;
-  margin-right: 1rem;
-}
-
-button:active {
-  transform: translateY(1px);
-}
-
-
-/* add leagueform css */
-.small-placeholder::placeholder {
-  font-size: 14px;
-}
-
-.form-container p {
-  margin-top: 10px;
-  color: green;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.submitnewbutton {
-  margin-top: 20px;
-  margin-bottom: 50px;
-  }
-
-  .searchbutton {
-    margin-left: 20px;
-  }
-
-  .form-container {
-    border: solid black 5px;
-    margin: 50px;
-  }
-
-  button.hideform {
-    display: block;
-    margin: auto;
-    margin-bottom: 40px;
-  }
-
-  .success-message {
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-  }
-
-  label {
-    margin-top: 4px;
-  }
