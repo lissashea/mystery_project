@@ -38,9 +38,7 @@ function AddLeagueForm({ onAdd, fetchAgain }) {
       !formData.name ||
       !formData.code ||
       !formData.areaName ||
-      !formData.areaCode ||
-      !formData.startDate ||
-      !formData.endDate
+      !formData.areaCode
     ) {
       setMessage("Please fill out all fields");
       return;
@@ -55,8 +53,8 @@ function AddLeagueForm({ onAdd, fetchAgain }) {
         flag: formData.areaFlag || null,
       },
       currentSeason: {
-        startDate: formData.startDate,
-        endDate: formData.endDate,
+        startDate: formData.startDate ? formData.startDate : new Date(),
+        endDate: formData.endDate ? formData.endDate : new Date(),
       },
     };
   
@@ -110,7 +108,7 @@ function AddLeagueForm({ onAdd, fetchAgain }) {
 
   return (
     <div>
-      <button className="hideform" onClick={handleAddLeagueClick}>
+      <button className="addLeagueForm" onClick={handleAddLeagueClick}>
         {showForm ? "Close Form" : "Add League"}
       </button>
       {showForm && (
@@ -166,7 +164,7 @@ function AddLeagueForm({ onAdd, fetchAgain }) {
                 type="text"
                 name="startDate"
                 placeholder="2022-08-10"
-                value={formData.startDate}
+                value={formData.endDate ? formData.endDate.substring(0, 10) : ''}
                 onChange={handleChange}
                 className="small-placeholder"
               />
