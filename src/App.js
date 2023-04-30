@@ -1,12 +1,19 @@
 import React, { useState } from "react";
 import LeagueSearch from "./LeagueSearch.jsx";
+import AddLeagueForm from "./AddLeagueForm.jsx";
+
 
 function App() {
   const [leagues, setLeagues] = useState([]);
 
+  const handleAdd = (newLeague) => {
+    setLeagues([...leagues, newLeague]);
+  };
+
   return (
     <div className="app">
       <h1>Football Leagues</h1>
+      <AddLeagueForm onAdd={handleAdd} />
       <LeagueSearch leagues={leagues} setLeagues={setLeagues} />
     </div>
   );
