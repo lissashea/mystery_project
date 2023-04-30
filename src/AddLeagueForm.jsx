@@ -82,6 +82,7 @@ function AddLeagueForm({ onAdd, fetchAgain }) {
         if (result.isConfirmed) {
           setSubmitted(true);
           setShowForm(false); // close the form
+          setMessage("")
           fetchAgain();
         }
       });

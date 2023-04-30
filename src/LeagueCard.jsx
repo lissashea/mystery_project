@@ -202,7 +202,7 @@ function LeagueCard({ league, fetchAgain }) {
               onChange={handleChange}
             />
           </label>
-          <button type="button" onClick={handleSave}>
+          <button type="button" class="save" onClick={handleSave}>
             Save
           </button>
           <button type="button" onClick={handleCancel}>
