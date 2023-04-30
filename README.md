@@ -2,7 +2,7 @@
 This is a football league search and management application built with React. It allows users to search for football leagues based on name, abbreviation or location. Users can also add new leagues to the list by filling out a form. It can only run locally at the moment.
 
 ## Installation
-* Clone the repository: git clone https://github.com/lissa-shea/mystery-project
+* Clone the repository: git clone https://github.com/lissashea/mystery_project
 * Install dependencies: npm install
 * Run the app: npm start
 

@@ -15,9 +15,7 @@ function AddLeagueForm({ onAdd, fetchAgain }) {
   });
 
   const [message, setMessage] = useState("");
-  const [submitted, setSubmitted] = useState(false);
   const [showForm, setShowForm] = useState(false);
-  const [leagues, setLeagues] = useState([]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -80,7 +78,6 @@ function AddLeagueForm({ onAdd, fetchAgain }) {
         confirmButtonText: 'OK'
       }).then((result) => {
         if (result.isConfirmed) {
-          setSubmitted(true);
           setShowForm(false); // close the form
           setMessage("")
           fetchAgain();
@@ -100,13 +97,14 @@ function AddLeagueForm({ onAdd, fetchAgain }) {
     const fetchAgain = async () => {
       try {
         const response = await axios.get("http://localhost:3000/football");
-        setLeagues(response.data);
+        onAdd(response.data);
       } catch (error) {
         console.error(error);
       }
     };
+  
     fetchAgain();
-  }, [submitted]);
+  }, [onAdd]);
 
   return (
     <div>
