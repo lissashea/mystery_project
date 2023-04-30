@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 import "./AddLeagueForm.css";
 
 function AddLeagueForm({ onAdd, fetchAgain }) {
@@ -33,7 +33,7 @@ function AddLeagueForm({ onAdd, fetchAgain }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     if (
       !formData.name ||
       !formData.code ||
@@ -45,7 +45,7 @@ function AddLeagueForm({ onAdd, fetchAgain }) {
       setMessage("Please fill out all fields");
       return;
     }
-  
+
     const newLeague = {
       name: formData.name,
       code: formData.code,
@@ -59,7 +59,7 @@ function AddLeagueForm({ onAdd, fetchAgain }) {
         endDate: formData.endDate,
       },
     };
-  
+
     try {
       const response = await axios.post(
         "http://localhost:3000/football",
@@ -76,10 +76,10 @@ function AddLeagueForm({ onAdd, fetchAgain }) {
         endDate: "",
       });
       Swal.fire({
-        icon: 'success',
-        title: 'Success',
-        text: 'Form submitted successfully!',
-        confirmButtonText: 'OK'
+        icon: "success",
+        title: "Success",
+        text: "Form submitted successfully!",
+        confirmButtonText: "OK",
       }).then((result) => {
         if (result.isConfirmed) {
           setSubmitted(true);
@@ -89,9 +89,9 @@ function AddLeagueForm({ onAdd, fetchAgain }) {
     } catch (error) {
       console.error(error);
       Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Error submitting form. Please try again later.'
+        icon: "error",
+        title: "Error",
+        text: "Error submitting form. Please try again later.",
       });
     }
   };
@@ -108,10 +108,11 @@ function AddLeagueForm({ onAdd, fetchAgain }) {
     fetchAgain();
   }, [submitted]);
 
+
   return (
     <div>
-      <button className="hideform" onClick={handleAddLeagueClick}>
-        {showForm ? "Close Form" : "Add League"}
+      <button className="addleague" onClick={handleAddLeagueClick}>
+        {showForm ? "Cancel" : "Add League"}
       </button>
       {showForm && (
         <div className="form-container">
@@ -183,7 +184,7 @@ function AddLeagueForm({ onAdd, fetchAgain }) {
               />
             </label>
             <button type="submit" className="submitnewbutton">
-              Add League
+              Submit
             </button>
           </form>
           {message && <p>{message}</p>}
@@ -192,5 +193,5 @@ function AddLeagueForm({ onAdd, fetchAgain }) {
     </div>
   );
 }
-
-export default AddLeagueForm;
+  export default AddLeagueForm;
+  

@@ -15,3 +15,13 @@
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
   transform: translateY(-2px);
 }
+
+form {
+    /* height: 300px; */
+    display: flex;
+    /* width: 300px; */
+    flex-direction: column;
+    /* justify-content: flex-start; */
+    align-items: baseline;
+    line-height: 2.75;
+}
