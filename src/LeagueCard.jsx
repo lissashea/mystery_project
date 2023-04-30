@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import "./LeagueSearch.css";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 import "./LeagueCard.css";
 
 function LeagueCard({ league, fetchAgain }) {
@@ -19,57 +18,46 @@ function LeagueCard({ league, fetchAgain }) {
     },
   });
 
-
   const handleDelete = async () => {
     try {
       const alertt = Swal.mixin({
         customClass: {
-          
-          confirmButton: 'btn btn-success',
-          cancelButton: 'btn btn-danger'
+          confirmButton: "btn btn-success",
+          cancelButton: "btn btn-danger",
         },
-        buttonsStyling: false
-      })
-      
+        buttonsStyling: false,
+      });
+
       Swal.fire({
         title: `Are you sure to delete ${league.name} of ${league.area.name}`,
         text: "You won't be able to revert this!",
-        icon: 'warning',
+        icon: "warning",
         showCancelButton: true,
-        confirmButtonText: 'Yes, delete it!',
-        cancelButtonText: 'No, cancel!',
-        reverseButtons: true
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "No, cancel!",
+        reverseButtons: true,
       }).then(async (result) => {
         if (result.isConfirmed) {
           const response = await axios.delete(
             `http://localhost:3000/football/${league._id}`
           );
           if (response.status === 200) {
-            alertt.fire(
-              'Deleted!',
-              `${league.name} has been deleted!` ,
-              'success'
-            ).then((res)=>{
-              fetchAgain();
-            })
+            alertt
+              .fire("Deleted!", `${league.name} has been deleted!`, "success")
+              .then((res) => {
+                fetchAgain();
+              });
           }
-       
         } else if (
           /* Read more about handling dismissals below */
           result.dismiss === Swal.DismissReason.cancel
         ) {
-          alertt.fire(
-            'Cancelled',
-            `${league.name} is safe :)`,
-            'error'
-          )
+          alertt.fire("Cancelled", `${league.name} is safe :)`, "error");
         }
-      })
-      
+      });
     } catch (error) {
       console.error("Error deleting league:", error);
     }
-   
   };
 
   const handleEdit = (id) => {
@@ -104,29 +92,26 @@ function LeagueCard({ league, fetchAgain }) {
             "Content-Type": "application/json",
           },
         }
-      ); 
+      );
       if (response.status === 200) {
         Swal.fire({
-          icon: 'success',
-          title: 'Success.',
-
-        }).then((res)=>{
+          icon: "success",
+          title: "Success.",
+        }).then((res) => {
           setEditing(false);
           fetchAgain();
-        })
+        });
       } else {
         Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'Something went wrong!',
-          footer: '<a href="">Why do I have this issue?</a>'
-        })
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong!",
+          footer: '<a href="">Why do I have this issue?</a>',
+        });
         throw new Error("PUT request failed");
-        
       }
     } catch (error) {
       console.error("Error updating league:", error);
-
     }
   };
 
@@ -232,8 +217,18 @@ function LeagueCard({ league, fetchAgain }) {
           <p>Country: {league.area ? league.area.name : "N/A"}</p>
           <p>League Name: {league.name}</p>
           <p>Code: {league.code}</p>
-          <p>Season Start: {league.currentSeason?.startDate}</p>
-          <p>Season End: {league.currentSeason?.endDate}</p>
+          <p>
+            Season Start:{" "}
+            {league.currentSeason
+              ? new Date(league.currentSeason.startDate).toLocaleDateString()
+              : "N/A"}
+          </p>
+          <p>
+            Season End:{" "}
+            {league.currentSeason
+              ? new Date(league.currentSeason.endDate).toLocaleDateString()
+              : "N/A"}
+          </p>
           <button type="button" onClick={handleDelete}>
             Delete
           </button>
@@ -242,7 +237,6 @@ function LeagueCard({ league, fetchAgain }) {
           </button>
         </>
       )}
-   
     </div>
   );
 }

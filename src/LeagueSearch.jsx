@@ -3,7 +3,6 @@ import LeagueCard from "./LeagueCard";
 import Select from "react-select";
 import "./LeagueSearch.css";
 import axios from "axios";
-import AddLeagueForm from "./AddLeagueForm";
 
 function LeagueSearch() {
   const [leagues, setLeagues] = useState([]);
@@ -27,23 +26,20 @@ function LeagueSearch() {
     setSearchTerm(event.target.value);
   };
 
-  const handleSearchButtonClick = (event) => {
-    event.preventDefault();
-    // Do the search based on selectedOption and searchTerm
-  };
-
   const fetchLeagues = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/football");
+      const response = await axios.get(
+        "http://localhost:3000/football"
+      );
       setLeagues(response.data);
     } catch (error) {
       console.error(error);
     }
   };
-
   useEffect(() => {
     fetchLeagues();
   }, [leagues]);
+
 
   const filteredLeagues = leagues.filter((league) => {
     if (!selectedOption) {
@@ -74,7 +70,7 @@ function LeagueSearch() {
 
   return (
     <div className="league-search">
-      <form onSubmit={handleSearchButtonClick}>
+      <form>
         <div className="search-container">
           <input
             type="text"
@@ -87,20 +83,12 @@ function LeagueSearch() {
             value={selectedOption}
             onChange={handleChange}
           />
-          <button className="searchbutton" type="submit">
-            Search
-          </button>
-          <AddLeagueForm onAdd={(newLeague) => setLeagues([...leagues, newLeague])} fetchAgain={fetchLeagues} />
         </div>
       </form>
       {filteredLeagues.length > 0 ? (
         <div className="league-cards-container">
           {filteredLeagues.map((league) => (
-            <LeagueCard
-              key={league._id}
-              league={league}
-              fetchAgain={fetchLeagues}
-            />
+            <LeagueCard key={league._id} league={league} fetchAgain={fetchLeagues} />
           ))}
         </div>
       ) : (
